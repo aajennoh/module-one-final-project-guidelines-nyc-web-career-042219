@@ -20,22 +20,82 @@ class Compliment < ActiveRecord::Base
   def self.customize_chuck(first_name, last_name)
     new_chuck = self.get_chuck.split(" ")
     done_chuck = new_chuck.map do |word|
-      if word == "Chuck" || word == "chuck" || word == "He" || word == "he"
+      if word == "Chuck" || word == "chuck"
         word = first_name
-      elsif word == "His" || word == "his" || word == "Chucks'" || word == "chucks"
+      elsif word == "CHUCK"
+        word = "#{first_name}.upcase!"
+      elsif word == "Chunk"
+        word = first_name
+      elsif word == "Chucks'" || word == "chucks"
         word = "#{first_name}'s"
       elsif word == "He's" || word == "he's"
-        word = "#{first_name}'s'"
-      elsif word == "Norris"
+        word = "#{first_name}'s"
+      elsif word == "\"Chuck\""
+        word = "\"#{first_name}\""
+      elsif word == "Chuck."
+        word = "#{first_name}."
+      elsif word == "Chuck?"
+        word = "#{first_name},"
+      elsif word == "Chuck,"
+        word = "#{first_name};"
+      elsif word == "Chuck;"
+        word = "#{first_name}?"
+      elsif word == "Norris" || word == "norris"
         word = last_name
-      elsif word == "Norris's" && last_name.last == 's'
+      elsif word == "NORRIS"
+        word = "#{last_name}.upcase!"
+      elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last == 's'
         word = "#{last_name}'"
-      elsif word == "Norris's" && last_name.last != 's'
+      elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last != 's'
         word = "#{last_name}'s"
-      elsif word == "Norris'" && last_name.last == 's'
+      elsif word == ("Norris'" || "norris'" || "Norrises") && last_name.last == 's'
         word = "#{last_name}'"
-      elsif word == "Norris'" && last_name.last != 's'
+      elsif word == ("Norris'" || "norris'" || "Norrises") && last_name.last != 's'
         word = "#{last_name}'s"
+      elsif word == "Norris'." && last_name.last == 's'
+        word = "#{last_name}'."
+      elsif word == "Norris'." && last_name.last != 's'
+        word = "#{last_name}'s."
+      elsif word == "\"Norris\""
+        word = "\"#{last_name}\""
+      elsif word == "Norris."
+        word = "#{last_name}."
+      elsif word == "Norris,"
+        word = "#{last_name},"
+      elsif word == "Norris;"
+        word = "#{last_name};"
+      elsif word == "Norris?"
+        word = "#{last_name}?"
+      elsif word == "Norris????"
+        word = "#{last_name}????"
+      elsif word == "Norris...the"
+        word = "#{last_name}... the"
+      elsif word == "Norris......" || word == "Norris...."
+        word = "#{last_name}...."
+      elsif word == "Norris\""
+        word = "#{last_name}\""
+      elsif word == "Norris\","
+        word = "#{last_name}\","
+      elsif word == "\"Chuck"
+        word = "\"#{first_name}"
+      elsif word == "\"Chuck Norris\""
+        word = "\"#{first_name} #{last_name}\""
+      elsif word == "Norris)"
+        word = "#{last_name})"
+      elsif word == '"gmail@chucknorris.com."'
+        word = "\"gmail@#{first_name}#{last_name}.com\""
+      elsif word == "He"
+        word = "He/She"
+      elsif word == "he"
+        word = "he/she"
+      elsif word == "His"
+        word = "His/Her"
+      elsif word == "his"
+        word = "his/her"
+      elsif word == "Him"
+        word = "Him/Her"
+      elsif word == "him"
+        word = "him/her"
       else
         word = word
       end
