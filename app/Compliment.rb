@@ -23,7 +23,7 @@ class Compliment < ActiveRecord::Base
       if word == "Chuck" || word == "chuck"
         word = first_name
       elsif word == "CHUCK"
-        word = "#{first_name}.upcase!"
+        word = "#{first_name.upcase!}"
       elsif word == "Chunk"
         word = first_name
       elsif word == "Chucks'" || word == "chucks"
@@ -35,15 +35,17 @@ class Compliment < ActiveRecord::Base
       elsif word == "Chuck."
         word = "#{first_name}."
       elsif word == "Chuck?"
-        word = "#{first_name},"
-      elsif word == "Chuck,"
-        word = "#{first_name};"
-      elsif word == "Chuck;"
         word = "#{first_name}?"
+      elsif word == "Chuck,"
+        word = "#{first_name},"
+      elsif word == "Chuck!"
+        word = "#{first_name}!"
+      elsif word == "Chuck;"
+        word = "#{first_name};"
       elsif word == "Norris" || word == "norris"
         word = last_name
       elsif word == "NORRIS"
-        word = "#{last_name}.upcase!"
+        word = "#{last_name.upcase!}"
       elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last == 's'
         word = "#{last_name}'"
       elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last != 's'
@@ -66,6 +68,8 @@ class Compliment < ActiveRecord::Base
         word = "#{last_name};"
       elsif word == "Norris?"
         word = "#{last_name}?"
+      elsif word == "Norris!"
+        word = "#{last_name}!"
       elsif word == "Norris????"
         word = "#{last_name}????"
       elsif word == "Norris...the"
@@ -96,6 +100,11 @@ class Compliment < ActiveRecord::Base
         word = "Him/Her"
       elsif word == "him"
         word = "him/her"
+      elsif word == ("Norris's." || "norris's." || "Norrises.") && last_name.last == 's'
+        word = "#{last_name}'."
+      elsif word == ("Norris's." || "norris's." || "Norrises.") && last_name.last != 's'
+        word = "#{last_name}'s."
+
       else
         word = word
       end
