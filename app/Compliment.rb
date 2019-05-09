@@ -12,105 +12,71 @@ class Compliment < ActiveRecord::Base
   has_many :users, through: :user_compliments
 
   def self.get_chuck
-    response_string = RestClient.get("https://api.chucknorris.io/jokes/random")
+    result = []
+    response_string = RestClient.get("http://api.icndb.com/jokes/")
     response_hash = JSON.parse(response_string)
-    response_hash["value"]
+    response_hash['value'].each do |joke_hash|
+      joke_hash.select do |key, value|
+        if key == "joke"
+          if !batch_include(value, ["him", "he", "his", "he's", "woodchuck", "dick", "chucktanium.", "chucked.", "testicles", "condom", "penis"])
+            result << value
+          end
+        end
+      end
+    end
+    result
+    binding.pry
+
   end
-  #does not work perfectly
+
+
+  def self.batch_include(joke, bad_values)
+    bad_word = false
+    bad_values.select do |bad_value|
+      if joke.downcase.include?(bad_value)
+        bad_word = true
+      end
+    end
+    bad_word
+  end
+
+
   def self.customize_chuck(first_name, last_name)
-    new_chuck = self.get_chuck.split(" ")
+    new_chuck = self.get_chuck.sample.split (' ')
     done_chuck = new_chuck.map do |word|
-      if word == "Chuck" || word == "chuck"
+      if word == "Chuck"
         word = first_name
-      elsif word == "CHUCK"
-        word = "#{first_name.upcase!}"
-      elsif word == "Chunk"
-        word = first_name
-      elsif word == "Chucks'" || word == "chucks"
-        word = "#{first_name}'s"
-      elsif word == "He's" || word == "he's"
-        word = "#{first_name}'s"
-      elsif word == "\"Chuck\""
-        word = "\"#{first_name}\""
       elsif word == "Chuck."
         word = "#{first_name}."
-      elsif word == "Chuck?"
-        word = "#{first_name}?"
-      elsif word == "Chuck,"
-        word = "#{first_name},"
-      elsif word == "Chuck!"
-        word = "#{first_name}!"
-      elsif word == "Chuck;"
-        word = "#{first_name};"
-      elsif word == "Norris" || word == "norris"
+      elsif word == "Norris"
         word = last_name
-      elsif word == "NORRIS"
-        word = "#{last_name.upcase!}"
-      elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last == 's'
-        word = "#{last_name}'"
-      elsif word == ("Norris's" || "norris's" || "Norrises") && last_name.last != 's'
-        word = "#{last_name}'s"
-      elsif word == ("Norris'" || "norris'" || "Norrises") && last_name.last == 's'
-        word = "#{last_name}'"
-      elsif word == ("Norris'" || "norris'" || "Norrises") && last_name.last != 's'
-        word = "#{last_name}'s"
-      elsif word == "Norris'." && last_name.last == 's'
-        word = "#{last_name}'."
-      elsif word == "Norris'." && last_name.last != 's'
-        word = "#{last_name}'s."
-      elsif word == "\"Norris\""
-        word = "\"#{last_name}\""
       elsif word == "Norris."
         word = "#{last_name}."
       elsif word == "Norris,"
         word = "#{last_name},"
-      elsif word == "Norris;"
-        word = "#{last_name};"
-      elsif word == "Norris?"
-        word = "#{last_name}?"
-      elsif word == "Norris!"
-        word = "#{last_name}!"
-      elsif word == "Norris????"
-        word = "#{last_name}????"
-      elsif word == "Norris...the"
-        word = "#{last_name}... the"
-      elsif word == "Norris......" || word == "Norris...."
-        word = "#{last_name}...."
-      elsif word == "Norris\""
-        word = "#{last_name}\""
-      elsif word == "Norris\","
-        word = "#{last_name}\","
-      elsif word == "\"Chuck"
-        word = "\"#{first_name}"
-      elsif word == "\"Chuck Norris\""
-        word = "\"#{first_name} #{last_name}\""
-      elsif word == "Norris)"
-        word = "#{last_name})"
-      elsif word == '"gmail@chucknorris.com."'
-        word = "\"gmail@#{first_name}#{last_name}.com\""
-      elsif word == "He"
-        word = "He/She"
-      elsif word == "he"
-        word = "he/she"
-      elsif word == "His"
-        word = "His/Her"
-      elsif word == "his"
-        word = "his/her"
-      elsif word == "Him"
-        word = "Him/Her"
-      elsif word == "him"
-        word = "him/her"
-      elsif word == ("Norris's." || "norris's." || "Norrises.") && last_name.last == 's'
-        word = "#{last_name}'."
-      elsif word == ("Norris's." || "norris's." || "Norrises.") && last_name.last != 's'
-        word = "#{last_name}'s."
-
+      elsif word == "Norris,\""
+        word = "#{last_name},\""
+      elsif word == "Norris'" && last_name.last = 's'
+        word = "#{last_name}'"
+      elsif word == "Norris'" && last_name.last != 's'
+        word = "#{last_name}'s"
+      elsif word == "Norris's" && last_name.last = 's'
+        word = "#{last_name}'"
+      elsif word == "Norris's" && last_name.last != 's'
+        word = "#{last_name}'s"
       else
         word = word
       end
     end
-    done_chuck.join(" ")
+    done_chuck.join(' ')
   end
+
+
+  # Chuck
+  # Norris
+  # Norris.
+
+
 
   def self.get_leslie(first_name, last_name)
     adjective = LeslieAdjective.adjective
@@ -126,4 +92,3 @@ class Compliment < ActiveRecord::Base
 end
 
 zach = Compliment.customize_chuck("Zach", "Vary")
-binding.pry
