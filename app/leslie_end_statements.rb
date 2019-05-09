@@ -10,9 +10,11 @@ class LeslieEnding
     "you are an angel",
     "you are a bright light in this dark world",
     "I am so lucky to know you",
-    "you have great taste",
+    "you have exquisite taste",
     "I would name my first-born after you",
-    "you are going to do big things"
+    "you are going to do big things",
+    "you are a prodigy in your field",
+    "you are a natural leader"
   ]
 
   def self.ending

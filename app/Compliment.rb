@@ -25,7 +25,6 @@ class Compliment < ActiveRecord::Base
       end
     end
     result
-    #binding.pry
   end
 
 
@@ -86,5 +85,3 @@ class Compliment < ActiveRecord::Base
     find_or_create_by(compliment_content)
   end
 end
-
-#zach = Compliment.customize_chuck("Zach", "Vary")
