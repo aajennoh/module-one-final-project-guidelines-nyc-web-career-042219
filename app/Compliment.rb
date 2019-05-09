@@ -56,7 +56,7 @@ class Compliment < ActiveRecord::Base
         word = "#{last_name},\""
       elsif word == "Norris'" && last_name.last == 's'
         word = "#{last_name}'"
-      elsif word == "Norris'" && last_name.last != 's'
+      elsif word == "Norris's" && last_name.last != 's'
         word = "#{last_name}'s"
       elsif word == "Norris's" && last_name.last == 's'
         word = "#{last_name}'"
@@ -85,3 +85,4 @@ class Compliment < ActiveRecord::Base
     find_or_create_by(compliment_content)
   end
 end
+
