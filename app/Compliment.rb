@@ -25,8 +25,6 @@ class Compliment < ActiveRecord::Base
       end
     end
     result
-    binding.pry
-
   end
 
 
@@ -56,14 +54,16 @@ class Compliment < ActiveRecord::Base
         word = "#{last_name},"
       elsif word == "Norris,\""
         word = "#{last_name},\""
-      elsif word == "Norris'" && last_name.last = 's'
-        word = "#{last_name}'"
-      elsif word == "Norris'" && last_name.last != 's'
-        word = "#{last_name}'s"
-      elsif word == "Norris's" && last_name.last = 's'
+      elsif word == "Norris'" && last_name.last == 's'
         word = "#{last_name}'"
       elsif word == "Norris's" && last_name.last != 's'
         word = "#{last_name}'s"
+      elsif word == "Norris's" && last_name.last == 's'
+        word = "#{last_name}'"
+      elsif word == "Norris's" && last_name.last != 's'
+        word = "#{last_name}'s"
+      elsif word == "Norris-related" || word == "norris-related"
+        word = "#{last_name}-related"
       else
         word = word
       end
@@ -71,10 +71,6 @@ class Compliment < ActiveRecord::Base
     done_chuck.join(' ')
   end
 
-
-  # Chuck
-  # Norris
-  # Norris.
 
 
 
@@ -88,7 +84,5 @@ class Compliment < ActiveRecord::Base
   def self.get_compliment(compliment_content)
     find_or_create_by(compliment_content)
   end
-
 end
 
-zach = Compliment.customize_chuck("Zach", "Vary")
